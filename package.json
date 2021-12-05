@@ -1,0 +1,33 @@
+{
+  "name": "@pkerschbaum/eslint-plugin-code-import-patterns",
+  "version": "0.0.1",
+  "license": "MIT",
+  "keywords": [
+    "eslint-plugin",
+    "code-import-patterns"
+  ],
+  "author": "Patrick Kerschbaum <patrick.kerschbaum@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkerschbaum/eslint-plugin-code-import-patterns"
+  },
+  "bugs": {
+    "url": "https://github.com/pkerschbaum/eslint-plugin-code-import-patterns/issues"
+  },
+  "main": "./out/index.js",
+  "types": "./out/index.d.ts",
+  "private": false,
+  "scripts": {
+    "prebuild": "rimraf out",
+    "build": "tsc",
+    "watch": "yarn run prebuild && tsc --watch",
+    "prepack": "yarn run build"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.2.1",
+    "@types/node": "^16.11.11",
+    "@typescript-eslint/experimental-utils": "^5.5.0",
+    "eslint": "^8.4.0",
+    "typescript": "^4.5.2"
+  }
+}
