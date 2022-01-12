@@ -13,7 +13,6 @@ type Zone = {
   target: RegExp;
   allowedPatterns?: SimplePattern[];
   forbiddenPatterns?: Pattern[];
-  subZones?: Zone[];
 };
 
 type PatternsCollection = {
@@ -212,16 +211,6 @@ function collectAllowedAndForbiddenPatterns(
     if (zone.target.test(lintedFilename)) {
       result.allowedPatterns.push(...(zone.allowedPatterns ?? []));
       result.forbiddenPatterns.push(...(zone.forbiddenPatterns ?? []));
-
-      if (zone.subZones) {
-        // collect further patterns via recursive call
-        const {
-          allowedPatterns: subAllowedPatterns,
-          forbiddenPatterns: subForbiddenPatterns,
-        } = collectAllowedAndForbiddenPatterns(lintedFilename, zone.subZones);
-        result.allowedPatterns.push(...subAllowedPatterns);
-        result.forbiddenPatterns.push(...subForbiddenPatterns);
-      }
     }
   }
 
