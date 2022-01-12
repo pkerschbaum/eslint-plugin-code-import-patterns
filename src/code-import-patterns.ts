@@ -4,25 +4,12 @@ import type * as eslint from "eslint";
 import type { TSESTree } from "@typescript-eslint/experimental-utils";
 import path from "path";
 import { createImportRuleListener } from "./utils";
-
-export type ImportPatternsConfig = {
-  zones: Zone[];
-};
-
-type Zone = {
-  target: RegExp;
-  allowedPatterns?: SimplePattern[];
-  forbiddenPatterns?: Pattern[];
-};
-
-type PatternsCollection = {
-  allowedPatterns: SimplePattern[];
-  forbiddenPatterns: Pattern[];
-};
-
-type SimplePattern = string | RegExp;
-type ObjectPattern = { pattern: SimplePattern; errorMessage: string };
-type Pattern = SimplePattern | ObjectPattern;
+import type {
+  ImportPatternsConfig,
+  ObjectPattern,
+  PatternsCollection,
+  Zone,
+} from "./types";
 
 type MessageId = "noAllowedPatternDidMatch" | "forbiddenPatternWasViolated";
 type Messages = {
