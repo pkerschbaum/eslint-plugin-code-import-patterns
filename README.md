@@ -19,9 +19,9 @@ Since the rule uses JavaScript regexes for the zones `target` parameters, the ru
 ```javascript
 module.exports = {
   // ... eslint configuration
-  plugins: ["@pkerschbaum/code-import-patterns"],
+  plugins: ["code-import-patterns"],
   rules: {
-    "@pkerschbaum/code-import-patterns/patterns": [
+    "code-import-patterns/patterns": [
       "error",
       {
         zones: [
