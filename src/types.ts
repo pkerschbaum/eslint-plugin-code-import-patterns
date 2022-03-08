@@ -1,5 +1,6 @@
 export type ImportPatternsConfig = {
   zones: Zone[];
+  matchAgainstAbsolutePaths?: boolean;
 };
 
 export type Zone = {

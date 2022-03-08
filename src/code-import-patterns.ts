@@ -39,79 +39,17 @@ export class CodeImportPatternsRule implements eslint.Rule.RuleModule {
       patterns.forbiddenPatterns.length > 0
     ) {
       return createImportRuleListener((node, value) =>
-        checkImport(context, patterns, node, value)
+        checkImport(
+          context,
+          patterns,
+          node,
+          value,
+          !!ruleOption.matchAgainstAbsolutePaths
+        )
       );
     }
 
     return {};
-  }
-
-  checkImport(
-    context: eslint.Rule.RuleContext,
-    patterns: PatternsCollection,
-    node: TSESTree.Node,
-    pathOfFile: string
-  ) {
-    // resolve relative paths
-    if (pathOfFile[0] === ".") {
-      pathOfFile = path.join(context.getFilename(), pathOfFile);
-    }
-
-    let someAllowedPatternDidMatch = false;
-
-    if (patterns.allowedPatterns.length === 0) {
-      someAllowedPatternDidMatch = true;
-    } else {
-      for (const stringOrRegexToTest of patterns.allowedPatterns) {
-        if (testPattern(stringOrRegexToTest, pathOfFile)) {
-          someAllowedPatternDidMatch = true;
-          break;
-        }
-      }
-    }
-
-    let errorMessagesOfViolatedForbiddenPatterns: string[] = [];
-    for (const pattern of patterns.forbiddenPatterns) {
-      let stringOrRegexToTest: string | RegExp;
-      let errorMessage: string | undefined;
-      if (typeof pattern === "string") {
-        stringOrRegexToTest = pattern;
-        errorMessage = `Import pattern "${stringOrRegexToTest}" is not allowed.`;
-      } else if (thingIsRegexp(pattern)) {
-        stringOrRegexToTest = pattern;
-        errorMessage = `Import pattern "${stringOrRegexToTest}" is not allowed.`;
-      } else if (thingIsObjectPattern(pattern)) {
-        stringOrRegexToTest = pattern.pattern;
-        errorMessage = pattern.errorMessage;
-      } else {
-        assertIsUnreachable(pattern);
-      }
-
-      if (testPattern(stringOrRegexToTest, pathOfFile)) {
-        errorMessagesOfViolatedForbiddenPatterns.push(errorMessage);
-      }
-    }
-
-    if (errorMessagesOfViolatedForbiddenPatterns.length > 0) {
-      const messageId: MessageId = "forbiddenPatternWasViolated";
-      context.report({
-        loc: node.loc,
-        messageId,
-        data: {
-          forbiddenPatternsViolationsMessage:
-            errorMessagesOfViolatedForbiddenPatterns.join(" "),
-        },
-      });
-    } else if (!someAllowedPatternDidMatch) {
-      const messageId: MessageId = "noAllowedPatternDidMatch";
-      context.report({
-        loc: node.loc,
-        messageId,
-        data: {
-          allowedPatterns: patterns.allowedPatterns.join('" or "'),
-        },
-      });
-    }
   }
 }
 
@@ -121,10 +59,11 @@ function checkImport(
   context: eslint.Rule.RuleContext,
   patterns: PatternsCollection,
   node: TSESTree.Node,
-  pathOfFile: string
+  pathOfFile: string,
+  matchAgainstAbsolutePaths: boolean
 ) {
-  // resolve relative paths
-  if (pathOfFile[0] === ".") {
+  // resolve relative paths if "matchAgainstAbsolutePaths" is configured
+  if (matchAgainstAbsolutePaths && pathOfFile[0] === ".") {
     pathOfFile = path.join(context.getFilename(), pathOfFile);
   }
 
