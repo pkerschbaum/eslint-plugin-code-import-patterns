@@ -1,5 +1,7 @@
 # `eslint-plugin-code-import-patterns`
 
+> _deprecated:_ got moved to <https://github.com/pkerschbaum/packages/tree/main/packages/eslint-plugin-code-import-patterns>
+
 This plugin can be used to allow/forbid specific `import` statements in certain areas ("zones") of the codebase.
 
 It is inspired by the `code-import-patterns` rule used at [microsoft/vscode](https://github.com/microsoft/vscode) (see [microsoft/vscode/.eslintrc.json#L93](https://github.com/microsoft/vscode/blob/31dfab2f7c5f72b163cf2c012d15bbea5550779a/.eslintrc.json#L93)). Actually, this plugin is based on [their custom implemented rule](https://github.com/microsoft/vscode/blob/d7f4200ec34f2aaa779113e408a63d5553727af7/build/lib/eslint/code-import-patterns.ts), but was extended to allow custom error message and regexes.
